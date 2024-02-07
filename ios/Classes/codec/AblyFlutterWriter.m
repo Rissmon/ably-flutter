@@ -47,8 +47,6 @@ NS_ASSUME_NONNULL_END
         return CodecTypeRestChannelOptions;
     } else if ([value isKindOfClass:[ARTCipherParams class]]) {
         return CodecTypeCipherParams;
-    } else if ([value isKindOfClass:[ARTTokenDetails class]]) {
-        return CodecTypeTokenDetails;
     }
     return 0;
 }
