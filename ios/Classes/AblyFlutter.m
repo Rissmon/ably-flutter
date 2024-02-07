@@ -46,7 +46,6 @@ static const FlutterHandler _createRest = ^void(AblyFlutter *const ably, Flutter
     NSMutableDictionary<NSString *, NSObject *> *const message = ablyMessage.message;
     AblyFlutterClientOptions *const options = (AblyFlutterClientOptions*) message[TxTransportKeys_options];
     
-    options.clientOptions.pushRegistererDelegate = [PushActivationEventHandlers getInstanceWithMethodChannel: ably.channel];
     ARTLog *const logger = [[ARTLog alloc] init];
     logger.logLevel = options.clientOptions.logLevel;
 
@@ -232,7 +231,6 @@ static const FlutterHandler _createRealtime = ^void(AblyFlutter *const ably, Flu
     NSMutableDictionary<NSString *, NSObject *> *const message = ablyMessage.message;
     AblyFlutterClientOptions *const options = (AblyFlutterClientOptions*) message[TxTransportKeys_options];
     
-    options.clientOptions.pushRegistererDelegate = [PushActivationEventHandlers getInstanceWithMethodChannel: ably.channel];
     ARTLog *const logger = [[ARTLog alloc] init];
     logger.logLevel = options.clientOptions.logLevel;
 
