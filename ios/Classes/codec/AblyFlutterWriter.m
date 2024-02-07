@@ -41,13 +41,7 @@ NS_ASSUME_NONNULL_END
         return CodecTypeLocalDevice;
     } else if([value isKindOfClass:[ARTDeviceDetails class]]) {
         return CodecTypeDeviceDetails;
-    } else if ([value isKindOfClass:[ARTPushChannelSubscription class]]) {
-        return CodecTypePushChannelSubscription;
-    } else if ([value isKindOfClass:[UNNotificationSettings class]]) {
-        return CodecTypeUnNotificationSettings;
-    } else if ([value isKindOfClass:[RemoteMessage class]]) {
-        return CodecTypeRemoteMessage;
-    } else if ([value isKindOfClass:[ARTRealtimeChannelOptions class]]) {
+    }else if ([value isKindOfClass:[ARTRealtimeChannelOptions class]]) {
         return CodecTypeRealtimeChannelOptions;
     } else if ([value isKindOfClass:[ARTChannelOptions class]]) {
         return CodecTypeRestChannelOptions;
@@ -69,11 +63,6 @@ NS_ASSUME_NONNULL_END
         [NSString stringWithFormat:@"%d", CodecTypePresenceMessage]: encodePresenceMessage,
         [NSString stringWithFormat:@"%d", CodecTypeTokenParams]: encodeTokenParams,
         [NSString stringWithFormat:@"%d", CodecTypePaginatedResult]: encodePaginatedResult,
-        [NSString stringWithFormat:@"%d", CodecTypeDeviceDetails]: PushNotificationEncoders.encodeDeviceDetails,
-        [NSString stringWithFormat:@"%d", CodecTypeLocalDevice]: PushNotificationEncoders.encodeLocalDevice,
-        [NSString stringWithFormat:@"%d", CodecTypePushChannelSubscription]: PushNotificationEncoders.encodePushChannelSubscription,
-        [NSString stringWithFormat:@"%d", CodecTypeUnNotificationSettings]: PushNotificationEncoders.encodeUNNotificationSettings,
-        [NSString stringWithFormat:@"%d", CodecTypeRemoteMessage]: PushNotificationEncoders.encodeRemoteMessage,
         [NSString stringWithFormat:@"%d", CodecTypeCipherParams]: CryptoCodec.encodeCipherParams,
         [NSString stringWithFormat:@"%d", CodecTypeTokenDetails]: encodeTokenDetails,
         [NSString stringWithFormat:@"%d", CodecTypeTokenRequest]: encodeTokenRequest,

@@ -24,11 +24,7 @@ typedef NS_ENUM(UInt8, CodecType) {
     CodecTypeRestPresenceParams = 143,
     CodecTypePresenceMessage = 144,
     CodecTypeRealtimePresenceParams = 145,
-    CodecTypeDeviceDetails = 146,
     CodecTypeLocalDevice = 147,
-    CodecTypePushChannelSubscription = 148,
-    CodecTypeUnNotificationSettings = 149,
-    CodecTypeRemoteMessage = 150,
     CodecTypeErrorInfo = 151,
     CodecTypeLogLevel = 152,
     CodecTypeConnectionStateChange = 153,
@@ -75,27 +71,6 @@ extern NSString *const AblyPlatformMethod_realtimeAuthAuthorize;
 extern NSString *const AblyPlatformMethod_realtimeAuthCreateTokenRequest;
 extern NSString *const AblyPlatformMethod_realtimeAuthRequestToken;
 extern NSString *const AblyPlatformMethod_realtimeAuthGetClientId;
-extern NSString *const AblyPlatformMethod_pushActivate;
-extern NSString *const AblyPlatformMethod_pushDeactivate;
-extern NSString *const AblyPlatformMethod_pushReset;
-extern NSString *const AblyPlatformMethod_pushSubscribeDevice;
-extern NSString *const AblyPlatformMethod_pushUnsubscribeDevice;
-extern NSString *const AblyPlatformMethod_pushSubscribeClient;
-extern NSString *const AblyPlatformMethod_pushUnsubscribeClient;
-extern NSString *const AblyPlatformMethod_pushListSubscriptions;
-extern NSString *const AblyPlatformMethod_pushDevice;
-extern NSString *const AblyPlatformMethod_pushRequestPermission;
-extern NSString *const AblyPlatformMethod_pushGetNotificationSettings;
-extern NSString *const AblyPlatformMethod_pushOpenSettingsFor;
-extern NSString *const AblyPlatformMethod_pushOnActivate;
-extern NSString *const AblyPlatformMethod_pushOnDeactivate;
-extern NSString *const AblyPlatformMethod_pushOnUpdateFailed;
-extern NSString *const AblyPlatformMethod_pushNotificationTapLaunchedAppFromTerminated;
-extern NSString *const AblyPlatformMethod_pushOnShowNotificationInForeground;
-extern NSString *const AblyPlatformMethod_pushOnMessage;
-extern NSString *const AblyPlatformMethod_pushOnBackgroundMessage;
-extern NSString *const AblyPlatformMethod_pushOnNotificationTap;
-extern NSString *const AblyPlatformMethod_pushBackgroundFlutterApplicationReadyOnAndroid;
 extern NSString *const AblyPlatformMethod_onRealtimeConnectionStateChanged;
 extern NSString *const AblyPlatformMethod_onRealtimeChannelStateChanged;
 extern NSString *const AblyPlatformMethod_onRealtimeChannelMessage;
