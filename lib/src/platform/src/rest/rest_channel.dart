@@ -10,9 +10,6 @@ class RestChannel extends PlatformObject {
   /// reference to Rest client
   Rest rest;
 
-  /// A [PushChannel] object.
-  PushChannel push;
-
   /// The channel name.
   String name;
 
@@ -23,7 +20,7 @@ class RestChannel extends PlatformObject {
 
   /// @nodoc
   /// instantiates with [Rest], [name] and [RestChannelOptions]
-  RestChannel(this.rest, this.push, this.name) {
+  RestChannel(this.rest, this.name) {
     _presence = RestPresence(this);
   }
 

@@ -15,23 +15,6 @@ class AblyMethodCallHandler {
           return onAuthCallback(call.arguments as AblyMessage);
         case PlatformMethod.realtimeAuthCallback:
           return onRealtimeAuthCallback(call.arguments as AblyMessage?);
-        case PlatformMethod.pushOnActivate:
-          return _onPushOnActivate(call.arguments as ErrorInfo?);
-        case PlatformMethod.pushOnDeactivate:
-          return _onPushOnDeactivate(call.arguments as ErrorInfo?);
-        case PlatformMethod.pushOnUpdateFailed:
-          return _onPushOnUpdateFailed(call.arguments as ErrorInfo);
-        case PlatformMethod.pushOnMessage:
-          return _onPushOnMessage(call.arguments as RemoteMessage);
-        case PlatformMethod.pushOnBackgroundMessage:
-          return _onPushBackgroundMessage(call.arguments as RemoteMessage);
-        case PlatformMethod.pushOnShowNotificationInForeground:
-          return _pushNotificationEvents
-              .showNotificationInForeground(call.arguments as RemoteMessage);
-        case PlatformMethod.pushOnNotificationTap:
-          return _onNotificationTap(call.arguments as RemoteMessage);
-        case PlatformMethod.pushOpenSettingsFor:
-          return _onOpenSettingsFor();
         default:
           throw PlatformException(
               code: 'Received invalid method channel call from Platform side',
@@ -68,46 +51,4 @@ class AblyMethodCallHandler {
     return realtime.options.authCallback!(tokenParams);
   }
 
-  final PushActivationEventsInternal _pushActivationEvents =
-      Push.activationEvents as PushActivationEventsInternal;
-  final PushNotificationEventsInternal _pushNotificationEvents =
-      Push.notificationEvents as PushNotificationEventsInternal;
-
-  Future<Object?> _onPushOnActivate(ErrorInfo? error) async {
-    _pushActivationEvents.onActivateStreamController.add(error);
-    return null;
-  }
-
-  Future<Object?> _onPushOnDeactivate(ErrorInfo? error) async {
-    _pushActivationEvents.onDeactivateStreamController.add(error);
-    return null;
-  }
-
-  Future<Object?> _onPushOnUpdateFailed(ErrorInfo error) async {
-    _pushActivationEvents.onUpdateFailedStreamController.add(error);
-    return null;
-  }
-
-  Future<Object?> _onPushOnMessage(RemoteMessage remoteMessage) async {
-    _pushNotificationEvents.onMessageStreamController.add(remoteMessage);
-    return null;
-  }
-
-  Future<Object?> _onPushBackgroundMessage(RemoteMessage remoteMessage) async {
-    await _pushNotificationEvents.handleBackgroundMessage(remoteMessage);
-    return null;
-  }
-
-  Future<Object?> _onNotificationTap(RemoteMessage remoteMessage) async {
-    _pushNotificationEvents.onNotificationTapStreamController
-        .add(remoteMessage);
-    return null;
-  }
-
-  Future<Object?> _onOpenSettingsFor() async {
-    if (_pushNotificationEvents.onOpenSettingsHandler != null) {
-      _pushNotificationEvents.onOpenSettingsHandler!();
-    }
-    return null;
-  }
 }

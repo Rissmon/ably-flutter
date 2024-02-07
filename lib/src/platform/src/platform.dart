@@ -16,7 +16,6 @@ class Platform {
     }
     _streamsChannel = StreamsChannel('io.ably.flutter.stream', _codec);
     AblyMethodCallHandler(_methodChannel!);
-    BackgroundIsolateAndroidPlatform().setupCallHandler();
     invokePlatformMethod<void>(PlatformMethod.resetAblyClients);
   }
 

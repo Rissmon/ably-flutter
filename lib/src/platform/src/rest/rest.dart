@@ -16,8 +16,6 @@ Map<int?, Rest> get restInstances => UnmodifiableMapView(_restInstances);
 class Rest extends PlatformObject {
   /// Construct a `Rest` object using an Ably [options] object.
   Rest({required this.options}) : super() {
-    channels = RestChannels(this);
-    push = Push(rest: this);
     auth = RestAuth(this);
   }
 
@@ -53,14 +51,4 @@ class Rest extends PlatformObject {
     return DateTime.fromMillisecondsSinceEpoch(time);
   }
 
-  /// A [Push] object.
-  late Push push;
-
-  /// A [Channels] object.
-  late RestChannels channels;
-
-  /// Retrieves a [LocalDevice] object that represents the
-  /// current state of the device as a target for push notifications.
-  Future<LocalDevice> device() async =>
-      invokeRequest<LocalDevice>(PlatformMethod.pushDevice);
 }

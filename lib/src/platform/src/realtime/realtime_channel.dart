@@ -34,7 +34,6 @@ class RealtimeChannel extends PlatformObject {
         state = ChannelState.initialized,
         super() {
     _presence = RealtimePresence(this);
-    push = PushChannel(_channelName, realtime: _realtime);
     on().listen((event) => state = event.current);
   }
 
@@ -98,7 +97,6 @@ class RealtimeChannel extends PlatformObject {
   // TODO(tihoic) RTL15 - experimental, ChannelProperties properties;
 
   /// A [PushChannel] object.
-  late PushChannel push;
 
   /// The current [ChannelState] of the channel.
   ChannelState state;

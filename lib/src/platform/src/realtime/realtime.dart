@@ -19,7 +19,6 @@ class Realtime extends PlatformObject {
         super() {
     _connection = Connection(this);
     _channels = RealtimeChannels(this);
-    push = Push(realtime: this);
     auth = RealtimeAuth(this);
   }
 
@@ -67,8 +66,6 @@ class Realtime extends PlatformObject {
   /// A [ClientOptions] object used to configure the client connection to Ably.
   late ClientOptions options;
 
-  /// A [Push] object.
-  late Push push;
 
   late RealtimeChannels _channels;
 
@@ -99,10 +96,6 @@ class Realtime extends PlatformObject {
     return DateTime.fromMillisecondsSinceEpoch(time);
   }
 
-  /// Retrieves a [LocalDevice] object that represents the current state of the
-  /// device as a target for push notifications.
-  Future<LocalDevice> device() async =>
-      invokeRequest<LocalDevice>(PlatformMethod.pushDevice);
 }
 
 Map<int?, Realtime> _realtimeInstances = {};
