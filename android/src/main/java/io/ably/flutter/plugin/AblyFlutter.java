@@ -11,7 +11,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import io.ably.flutter.plugin.generated.PlatformConstants;
 import io.ably.flutter.plugin.push.RemoteMessageCallback;
-import io.ably.flutter.plugin.push.PushActivationEventHandlers;
 import io.ably.flutter.plugin.push.PushMessagingEventHandlers;
 import io.ably.flutter.plugin.util.CipherParamsStorage;
 import io.ably.lib.util.Log;
@@ -37,7 +36,6 @@ public class AblyFlutter implements FlutterPlugin, ActivityAware, PluginRegistry
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         applicationContext = flutterPluginBinding.getApplicationContext();
         setupChannels(flutterPluginBinding.getBinaryMessenger(), applicationContext);
-        PushActivationEventHandlers.getInstance().registerReceiver();
     }
 
     private void setupChannels(BinaryMessenger messenger, Context applicationContext) {
@@ -50,13 +48,10 @@ public class AblyFlutter implements FlutterPlugin, ActivityAware, PluginRegistry
         methodCallHandler = new AblyMethodCallHandler(methodChannel, streamsChannel, applicationContext);
         new BackgroundMethodCallHandler(messenger, codec);
         methodChannel.setMethodCallHandler(methodCallHandler);
-        PushActivationEventHandlers.instantiate(applicationContext, methodChannel);
-        PushMessagingEventHandlers.reset(applicationContext, methodChannel);
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        PushActivationEventHandlers.getInstance().unregisterReceiver();
     }
 
     private static MethodCodec createCodec(CipherParamsStorage cipherParamsStorage) {
