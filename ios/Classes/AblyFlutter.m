@@ -74,15 +74,6 @@ static const FlutterHandler _createRest = ^void(AblyFlutter *const ably, Flutter
     }
     ARTRest *const rest = [[ARTRest alloc] initWithOptions:options.clientOptions];
     [instanceStore setRest:rest with: handle];
-
-    NSData *const apnsDeviceToken = ably.instanceStore.didRegisterForRemoteNotificationsWithDeviceToken_deviceToken;
-    NSError *const error = ably.instanceStore.didFailToRegisterForRemoteNotificationsWithError_error;
-    if (apnsDeviceToken != nil) {
-        [ARTPush didRegisterForRemoteNotificationsWithDeviceToken:apnsDeviceToken rest:rest];
-    } else if (error != nil) {
-        [ARTPush didFailToRegisterForRemoteNotificationsWithError:error rest:rest];
-    }
-
     result(handle);
 };
 
@@ -266,14 +257,7 @@ static const FlutterHandler _createRealtime = ^void(AblyFlutter *const ably, Flu
     // error in didFailToRegisterForRemoteNotificationsWithError and pass it to Ably in the first client that is first created.
     // Ideally, the Ably client doesn't need to be created, and we can pass the deviceToken to Ably like in Ably Java.
     // This is similarly repeated for in _createRest
-    NSData *const apnsDeviceToken = ably.instanceStore.didRegisterForRemoteNotificationsWithDeviceToken_deviceToken;
-    NSError *const error = ably.instanceStore.didFailToRegisterForRemoteNotificationsWithError_error;
-    if (apnsDeviceToken != nil) {
-        [ARTPush didRegisterForRemoteNotificationsWithDeviceToken:apnsDeviceToken realtime:realtime];
-    } else if (error != nil) {
-        [ARTPush didFailToRegisterForRemoteNotificationsWithError:error realtime:realtime];
-    }
-    
+
     result(handle);
 };
 
@@ -667,7 +651,6 @@ static const FlutterHandler _realtimeAuthCreateTokenRequest = ^void(AblyFlutter 
     NSDictionary<NSString *, FlutterHandler>* _handlers;
     AblyStreamsChannel* _streamsChannel;
     FlutterMethodChannel* _channel;
-    PushNotificationEventHandlers* _pushNotificationEventHandlers;
 }
 
 @synthesize instanceStore = _instanceStore;
@@ -706,10 +689,6 @@ static const FlutterHandler _realtimeAuthCreateTokenRequest = ^void(AblyFlutter 
     _instanceStore = [AblyInstanceStore sharedInstance];
     _channel = channel;
     _streamsChannel = streamsChannel;
-    UNUserNotificationCenter *const center = UNUserNotificationCenter.currentNotificationCenter;
-    _pushNotificationEventHandlers = [[PushNotificationEventHandlers alloc] initWithDelegate: center.delegate andMethodChannel: channel];
-    center.delegate = _pushNotificationEventHandlers;
-    
     _handlers = @{
         AblyPlatformMethod_getPlatformVersion: _getPlatformVersion,
         AblyPlatformMethod_getVersion: _getVersion,
@@ -740,18 +719,6 @@ static const FlutterHandler _realtimeAuthCreateTokenRequest = ^void(AblyFlutter 
         AblyPlatformMethod_realtimeTime:_realtimeTime,
         AblyPlatformMethod_restTime:_restTime,
         // Push Notifications
-        AblyPlatformMethod_pushActivate: PushHandlers.activate,
-        AblyPlatformMethod_pushRequestPermission: PushHandlers.requestPermission,
-        AblyPlatformMethod_pushGetNotificationSettings: PushHandlers.getNotificationSettings,
-        AblyPlatformMethod_pushDeactivate: PushHandlers.deactivate,
-        AblyPlatformMethod_pushSubscribeDevice: PushHandlers.subscribeDevice,
-        AblyPlatformMethod_pushUnsubscribeDevice: PushHandlers.unsubscribeDevice,
-        AblyPlatformMethod_pushSubscribeClient: PushHandlers.subscribeClient,
-        AblyPlatformMethod_pushUnsubscribeClient: PushHandlers.unsubscribeClient,
-        AblyPlatformMethod_pushListSubscriptions: PushHandlers.listSubscriptions,
-        AblyPlatformMethod_pushDevice: PushHandlers.device,
-        AblyPlatformMethod_pushNotificationTapLaunchedAppFromTerminated: PushHandlers.pushNotificationTapLaunchedAppFromTerminated,
-        // Encryption
         AblyPlatformMethod_cryptoGetParams: CryptoHandlers.getParams,
         AblyPlatformMethod_cryptoGenerateRandomKey: CryptoHandlers.generateRandomKey,
         //Authorize
@@ -786,37 +753,6 @@ static const FlutterHandler _realtimeAuthCreateTokenRequest = ^void(AblyFlutter 
 -(void)reset {
     [_instanceStore reset];
     [self->_streamsChannel reset];
-}
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-    // Check if application was launched from a notification tap.
-    
-    // https://stackoverflow.com/a/21611009/7365866
-    NSDictionary *notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (notification) {
-        PushHandlers.pushNotificationTapLaunchedAppFromTerminatedData = notification;
-    }
-    
-    return YES;
-}
-
-#pragma mark - Push Notifications Registration - UIApplicationDelegate
-/// Save the deviceToken provided so we can pass it to the first Ably client which gets created, in createRealtime or createRest.
--(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Set deviceToken on all existing Ably clients, and a property which used for all future Ably clients.
-    [_instanceStore didRegisterForRemoteNotificationsWithDeviceToken: deviceToken];
-}
-
-/// Save the error if it occurred during APNs device registration provided so we can pass it to the first Ably client which gets created, in createRealtime or createRest.
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    // This error will be used when the first Ably client is made.
-    _instanceStore.didFailToRegisterForRemoteNotificationsWithError_error = error;
-}
-
-- (BOOL)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [_pushNotificationEventHandlers application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
-    return YES;
 }
 
 @end

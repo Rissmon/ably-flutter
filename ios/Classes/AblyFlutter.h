@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AblyFlutter : NSObject<FlutterPlugin, UNUserNotificationCenterDelegate>
+@interface AblyFlutter : NSObject<FlutterPlugin>
 
 +(instancetype)new NS_UNAVAILABLE;
 +(instancetype)init NS_UNAVAILABLE;
