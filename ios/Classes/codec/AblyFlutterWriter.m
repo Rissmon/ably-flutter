@@ -35,13 +35,7 @@ NS_ASSUME_NONNULL_END
         return CodecTypeTokenParams;
     }else if([value isKindOfClass:[ARTPaginatedResult class]]){
         return CodecTypePaginatedResult;
-    } else if ([value isKindOfClass:[ARTLocalDevice class]]) {
-        // Check for ARTLocalDevice before ARTLocalDevice, since ARTLocalDevice extends ARTDeviceDetails.
-        // If CodecTypeDeviceDetails was used first, the ARTLocalDevice fields won't be serialized.
-        return CodecTypeLocalDevice;
-    } else if([value isKindOfClass:[ARTDeviceDetails class]]) {
-        return CodecTypeDeviceDetails;
-    }else if ([value isKindOfClass:[ARTRealtimeChannelOptions class]]) {
+    } else if ([value isKindOfClass:[ARTRealtimeChannelOptions class]]) {
         return CodecTypeRealtimeChannelOptions;
     } else if ([value isKindOfClass:[ARTChannelOptions class]]) {
         return CodecTypeRestChannelOptions;
@@ -62,8 +56,6 @@ NS_ASSUME_NONNULL_END
         [NSString stringWithFormat:@"%d", CodecTypeTokenParams]: encodeTokenParams,
         [NSString stringWithFormat:@"%d", CodecTypePaginatedResult]: encodePaginatedResult,
         [NSString stringWithFormat:@"%d", CodecTypeCipherParams]: CryptoCodec.encodeCipherParams,
-        [NSString stringWithFormat:@"%d", CodecTypeTokenDetails]: encodeTokenDetails,
-        [NSString stringWithFormat:@"%d", CodecTypeTokenRequest]: encodeTokenRequest,
     };
     return [_handlers objectForKey:[NSString stringWithFormat:@"%@", type]];
 }
