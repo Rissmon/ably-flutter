@@ -34,6 +34,8 @@ dependencies {
 
 android {
     compileSdkVersion 32
+    namespace "io.ably.flutter.plugin"
+
     // Require Java language level 8 so we can use Method References (used with Lambdas)
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
